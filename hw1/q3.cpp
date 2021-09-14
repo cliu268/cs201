@@ -23,3 +23,28 @@ Sample Input
 Sample Output
 3
 */
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int nthNumber(int n) {
+    if (n == 0 || n == 1) {
+        return 0;
+    } else if (n == 2 || n == 3) {
+        return 1;
+    } else {
+        vector<int> ans(n+1);
+        ans[0] = ans[1] = 0;
+        ans[2] = ans[3] = 1;
+        for (int i = 4; i <= n; i++) {
+            ans[i] = ans[i-1] + 2*ans[i-2] + ans[i-3];
+        }
+        return ans[n];
+    }
+}
+
+int main(void) {
+    int n;
+    cin >> n;
+    cout << nthNumber(n) << endl;
+}

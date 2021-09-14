@@ -20,10 +20,12 @@ a single number, which is the number of ways. modulo 1000000007
 */
 //#include <bits/stdc++.h>
 #include <iostream>
+#include <vector>
 using namespace std;
  
 long long solution(int n, int k) {
-  long long * ans = new long long[n];
+  vector<long long> ans(n);
+  //long long * ans = new long long[n];
   ans[0]=1;
   ans[1]=1;
   for (int i=2; i<n; i++) {
