@@ -1,4 +1,4 @@
-/*
+/*  Q1 Taking Steps
 【Description】
 There are n stairs. For each time, maoge can take k steps at most. Please find out how many ways there are for him to reach the n-th step.
 
