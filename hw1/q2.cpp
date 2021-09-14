@@ -48,10 +48,9 @@ int digitalTriangle(int ** ans, int n) {
             for (int j = 1; j < i; j++) {
                 ans[i][j] += max(ans[i-1][j-1], ans[i-1][j]);
             }
-            ans[i][i] += ans[i-1][i];
+            ans[i][i] += ans[i-1][i-1];
         }
-        //return *max(ans[n-1], ans[n-1] + n);
-        return 0;
+        return *max_element(ans[n-1], ans[n-1] + n);
     }
 }
 
@@ -68,15 +67,15 @@ int main(void) {
 
     cout << digitalTriangle(ans, n) << endl;
 
-    // print the 2D array
-    cout << "Print 2D array" << endl;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < i+1; j++) {
-            cout << ans[i][j] << " ";
-        }
-        cout << endl;
-    }    
+    // // print the 2D array
+    // cout << "Print 2D array" << endl;
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < i+1; j++) {
+    //         cout << ans[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }    
 
     // deallocate memory using the delete operator
     for (int i = 0; i < n; i++) {
