@@ -20,26 +20,27 @@ a single number, which is the number of ways. modulo 1000000007
 */
 //#include <bits/stdc++.h>
 #include <iostream>
-#include <vector>
 using namespace std;
  
 long long solution(int n, int k) {
-  std::vector<long long int> ans(n);
+  long long * ans = new long long[n];
   ans[0]=1;
   ans[1]=1;
-  for (int i=2; i<=n; i++) {
+  for (int i=2; i<n; i++) {
     ans[i]=0;
     for (int j=1; j<=k && j<=i; j++) {
       ans[i]+=ans[i-j];
     }
     ans[i] %= 1000000007;
   }
-  return ans[n];
+  return ans[n-1];
 }
  
-int main() {
+int main(void) {
   int n,k;
-  cin>>n>>k;
-  printf("%llu", solution(n,k));
+  long long ans;
+  cin >> n;
+  cin >> k;
+  printf("%lld", solution(n+1,k));
   return 0;
 }
