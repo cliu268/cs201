@@ -14,3 +14,26 @@ Sample output 1:
 13
 
 */
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int triangleCounting(int n) {
+    vector<int> ans(n);
+    ans[0] = 1;
+    for (int i = 1; i < n; i++) { // note that array starts with index 0, meaning i = n-1
+        if (i% 2 == 0) {
+            ans[i] = ans[i-1] + (i+2)*(i+1)/2 + (i+2)*i/4;
+        } else {
+            ans[i] = ans[i-1] + (i+2)*(i+1)/2 + (i+1)*(i+1)/4;
+        }
+    }
+    return ans[n-1];
+}
+
+int main(void) {
+    int n;
+    cin >> n;
+    cout << triangleCounting(n) << endl;
+    return 0;
+}
