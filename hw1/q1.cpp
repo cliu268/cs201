@@ -43,6 +43,6 @@ int main(void) {
   long long ans;
   cin >> n;
   cin >> k;
-  printf("%lld", solution(n+1,k));
+  cout << solution(n+1,k);
   return 0;
 }
