@@ -18,10 +18,10 @@ Sample output 1:
 #include <vector>
 using namespace std;
 
-int triangleCounting(int n) {
-    vector<int> ans(n);
+long long triangleCounting(int n) {
+    vector<long long int> ans(n);
     ans[0] = 1;
-    for (int i = 1; i < n; i++) { // note that array starts with index 0, meaning i = n-1
+    for (long long i = 1; i < n; i++) { // note that array starts with index 0, meaning i = n-1
         if (i% 2 == 0) {
             ans[i] = ans[i-1] + (i+2)*(i+1)/2 + (i+2)*i/4;
         } else {
@@ -35,5 +35,6 @@ int main(void) {
     int n;
     cin >> n;
     cout << triangleCounting(n) << endl;
+    //printf("%llu", triangleCounting(n));
     return 0;
 }
