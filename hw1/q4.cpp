@@ -3,7 +3,7 @@ Divide each side of the large triangle by n and connect the corresponding bisect
 to the three sides). How many triangles there will be? Programming to solve this problem.
 
 Input:
-Integer n where 1<=n<=10000
+Integer n where 1<=n<100000
 
 Output:
 Integer indicating the number of triangles
@@ -12,7 +12,14 @@ Sample input 1:
 3
 Sample output 1:
 13
-
+Sample input 2:
+50000
+Sample output 2:
+31251562512500
+Sample input 3:
+99999
+Sample output 3:
+249998749975000
 */
 #include <iostream>
 #include <vector>
