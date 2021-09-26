@@ -1,4 +1,4 @@
-// Maoge's Tower
+// Q1 Maoge's Tower
 /*
 【Description】
 maoge has N bricks (2<=N<=1000)，and he wants to build a tower. If he put brick A over brick B, then the 
