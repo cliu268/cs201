@@ -20,3 +20,44 @@ Sample input:
 Sample output:
 3
 */
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void floodFill(vector<vector<int>> &input, int x, int y, int &visted) {
+    // for (int i = 0; i < input.size(); i++) {
+    //     for (int j = 0; j < input.size(); j++) {
+    //         cout << input[i][j] << " ";
+    //     }
+    //     cout << "\n";
+    // }
+    if (x < input.size() && y < input.size() && input[x][y] == 0) {
+        visted += 1;
+        input[x][y] = 1;
+        // move up
+        floodFill(input, x-1, y, visted);
+        // move down
+        floodFill(input, x+1, y, visted);
+        // move top-left
+        floodFill(input, x-1, y-1, visted);
+        // move bottom-right
+        floodFill(input, x+1, y+1, visted);
+    }
+}
+
+int main(void) {
+    int n,x,y;
+    cin >> n >> x >> y;
+    vector<vector<int>> input(n);
+    for (int i = 0; i < n; i++) {
+        vector<int> row(n);
+        for (int j = 0; j < n; j++) {
+            cin >> row[j];
+        }
+        input[i] = row;
+    }
+    int visted = 0;
+    floodFill(input, x, y, visted);
+    cout << visted;
+    return 0;
+}
