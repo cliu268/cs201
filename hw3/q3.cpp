@@ -31,7 +31,7 @@ void floodFill(vector<vector<int>> &input, int x, int y, int &visted) {
     //     }
     //     cout << "\n";
     // }
-    if (x < input.size() && y < input.size() && input[x][y] == 0) {
+    if (0 <= x && x < input.size() && 0 <= y && y < input.size() && input[x][y] == 0) {
         visted += 1;
         input[x][y] = 1;
         // move up

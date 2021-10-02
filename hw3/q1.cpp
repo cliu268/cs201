@@ -22,10 +22,11 @@ Number of solutions. mod 1000000007
 */
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int mTower(vector<int> bricks, int D) {
-    vector<int> ans(bricks.size() + 1);
+    vector<long long> ans(bricks.size() + 1);
     ans[0] = 0; // invalid case
     ans[1] = 1;
     for (int i = 1; i < bricks.size(); i++) {
@@ -34,7 +35,8 @@ int mTower(vector<int> bricks, int D) {
         for (j=i; j>0; j--) {
             if (bricks[i] - bricks[j-1] >= D) break; // j is the brick that satisifies condition D
         }
-        ans[i+1] = 1 + ans[i] + ans[j]; 
+        ans[i+1] = 1 + ans[i] + ans[j];
+        ans[i+1] %= 1000000007;
     }
     return ans[bricks.size()];
 }
@@ -46,5 +48,6 @@ int main(void) {
     for (int i = 0; i < n; i++) {
         cin >> bricks[i];
     }
+    sort(bricks.begin(), bricks.end());
     cout << mTower(bricks, D) << endl;
 }
