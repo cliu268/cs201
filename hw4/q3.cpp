@@ -23,12 +23,29 @@ Sample Output：
 #include <vector>
 using namespace std;
 
-void traverse(vector<vector<int>> &board, int n, int m, int sr, int sc) {
-    // for (int i = 0; i < board.size(); i++) {
-    //     for (int j = 0; j < board[i].size(); j++) {
-    //         board[i][j] = sr*(-1);
-    //     }
-    // }    
+bool isValid(vector<vector<int>> board, int row, int col, int count) {
+    if (row < 0 || col < 0 || row >= board.size() || col >= board[0].size() || 
+        (board[row][col] != -1 && count >= board[row][col])) { // allow override if count is smaller
+        return false;
+    }
+    return true;
+}
+
+void traverse(vector<vector<int>> &board, int sr, int sc, int &count) {
+    if (!isValid(board, sr, sc, count)) {
+        return;
+    }  
+
+    board[sr][sc] = count;
+    count++;
+    
+    // 8 ways to traverse
+    int move[8][2] = {{1,2}, {2,1}, {-1,-2}, {-2,-1}, {1,-2}, {-2,1}, {-1,2}, {2,-1}};
+    for (int i = 0; i < 8; i++) {
+        traverse(board, sr+move[i][0], sc+move[i][1], count);
+    }
+    
+    count--;
 }
 
 void printBoard(vector<vector<int>> board) {
@@ -45,10 +62,11 @@ int main(void) {
     cin >> n >> m >> sr >> sc;
     vector<vector<int>> board(n);
     for (int i = 0; i < n; i++) {
-        vector<int> row(m, 0);
+        vector<int> row(m, -1);
         board[i] = row;
     }
-    traverse(board, n, m, sr, sc);
+    int count = 0;
+    traverse(board, sr-1, sc-1, count);
     printBoard(board);
     return 0;
 }
