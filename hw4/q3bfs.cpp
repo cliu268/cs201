@@ -27,8 +27,10 @@ Sample Output2:
 */
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
+queue<int> qx, qy, qz;
 // 8 ways to traverse
 int dirx[8] = {1, 2, -1, -2, 1, -2, -1, 2};
 int diry[8] = {2, 1, -2, -1, -2, 1, 2, -1};
@@ -42,34 +44,44 @@ bool isValid(int row, int col, int count) {
     return true;
 }
 
-void traverse(int sr, int sc, int &count) {
-    if (!isValid(sr, sc, count)) {
-        return;
-    }  
-
-    board[sr][sc] = count;
+void traverse(int sr, int sc, int count) {
     count++;
-    
     for (int i = 0; i < 8; i++) {
-        traverse(sr+dirx[i], sc+diry[i], count);
+        int x = sr+dirx[i], y = sc+diry[i];
+        if (isValid(x, y, count)) {
+            board[x][y] = count;
+            qx.push(x);
+            qy.push(y);
+            qz.push(count);
+        }
     }
-    
-    count--;
+
+    while (!qx.empty()) {
+        int x = qx.front();
+        int y = qy.front();
+        int z = qz.front();
+        qx.pop();
+        qy.pop();
+        qz.pop();
+        traverse(x, y, z);
+    }
 }
 
 int main(void) {
-    int n, m, sr, sc, count = 0;
+    int n, m, sr, sc;
     cin >> n >> m >> sr >> sc;
     for (int i = 0; i < n; i++) {
         vector<int> row(m, -1);
         board.push_back(row);
     }
+    int count = 0;
+    board[sr-1][sc-1] = 0;
     traverse(sr-1, sc-1, count);
     for (int i = 0; i < board.size(); i++) {
         for (int j = 0; j < board[i].size(); j++) {
             printf("%-*d", 5, board[i][j]);
         }
         cout << "\n";
-    } 
+    }
     return 0;
 }
