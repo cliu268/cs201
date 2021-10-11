@@ -57,22 +57,33 @@ For 100% data, n <= 1000, m <= 100000
 */
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
 vector<string> maze;
 vector<vector<bool>> visited;
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
+queue<int> qx, qy;
 
 void solve(int &count, int sr, int sc) {
-    visited[sr][sc] = true;
-    count++;
     for (int i = 0; i < 4; i++) {
         int x = sr+dx[i], y = sc+dy[i];          
         if (x<0 || y<0 || x>=maze.size() || y>=maze.size()) continue;      
-        if (maze[x][y] == maze[sr][sc] || visited[x][y]) continue;  
-        solve(count, sr+dx[i], sc+dy[i]);
+        if (maze[x][y] == maze[sr][sc] || visited[x][y]) continue;
+        visited[x][y] = true;   
+        count++;
+        qx.push(x);
+        qy.push(y);
     }
+
+    while (!qx.empty()) {
+        int x = qx.front();
+        int y = qy.front();
+        qx.pop();
+        qy.pop();
+        solve(count, x, y);
+    }    
     return;
 }
 
@@ -103,10 +114,11 @@ int main(void) {
         if (answer[x][y] > 0) { // already have an answer, no need to solve again
             cout << answer[x][y] << "\n";
             continue;
-        }
-        int count = 0;
+        }        
         vector<bool> row(n, false);
         fill(visited.begin(), visited.end(), row);
+        int count = 1;
+        visited[x][y] = true;
         solve(count, x, y);
         cout << count << "\n";
         // fill all the cells on the path to the same answer
@@ -116,7 +128,7 @@ int main(void) {
                     answer[i][j] = count;
                 }
             }
-        }
+        }        
     }
     return 0;    
 }
