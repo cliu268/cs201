@@ -57,15 +57,19 @@ For 100% data, n <= 1000, m <= 100000
 */
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
 vector<string> maze;
 vector<vector<bool>> visited;
+queue<int> ansx, ansy;
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 
 void solve(int &count, int sr, int sc) {
     visited[sr][sc] = true;
+    ansx.push(sr);
+    ansy.push(sc);
     count++;
     for (int i = 0; i < 4; i++) {
         int x = sr+dx[i], y = sc+dy[i];          
@@ -89,34 +93,43 @@ int main(void) {
         vector<bool> row(n, false);
         visited.push_back(row);
     }
-    vector<vector<int>> sp(m);
-    for (int j = 0; j < m; j++) {
-        vector<int> point(2);
+    int size = m%2 == 1 ? m/2+1 : m/2;
+    vector<vector<int>> sp(size);
+    vector<int> point(2);    
+    for (int j = 0; j < size-1; j++) {
         cin >> point[0] >> point[1];
         sp[j] = point;
     }
+    if (m%2 == 1) {
+        cin >> point[0];
+        point[1] = sp[size-2][1];
+        sp[size-1] = point;
+    } else {
+        cin >> point[0] >> point[1];
+        sp[size-1] = point;
+    }    
     // create an answer vector to store all answers
     // this is so you compute ALL cells on the same path just once
     vector<vector<int>> answer(n, vector<int> (n, 0));
-    for (int k = 0; k < m; k++) {
+    for (int k = 0; k < size; k++) {
         int x=sp[k][0]-1, y=sp[k][1]-1;
         if (answer[x][y] > 0) { // already have an answer, no need to solve again
             cout << answer[x][y] << "\n";
             continue;
         }
         int count = 0;
-        vector<bool> row(n, false);
-        fill(visited.begin(), visited.end(), row);
         solve(count, x, y);
         cout << count << "\n";
-        // fill all the cells on the path to the same answer
-        for (int i=0; i<n; i++) {
-            for (int j=0; j<n; j++){
-                if (visited[i][j]) {
-                    answer[i][j] = count;
-                }
-            }
+        while (!ansx.empty()) {
+            int x = ansx.front();
+            int y = ansy.front();
+            answer[x][y] = count;
+            ansx.pop();                 
+            ansy.pop();
         }
     }
+    for (int k = size; k < m; k++) {
+        cout << answer[sp[size-1][0]-1][sp[size-1][1]-1] << "\n";
+    }        
     return 0;    
 }
