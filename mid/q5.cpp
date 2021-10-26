@@ -12,7 +12,7 @@ is indicated by a number.
 The unique thing about this matrix is that once you pass a spot that spot will disappear. So basically you can not 
 reach the same spot again.
 
-The explorers wanted to know how many treasures they can get by maximum if they enter from lower left entrance and 
+The explorers wanted to know how many treasures they can get by maximum if they enter from upper left entrance and 
 exit from lower right exit.
 
 Input：
@@ -38,3 +38,57 @@ Sample Output ：
 Notes：
 1 <= N，M<= 7，0<=each treasure<=9
 */
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<string> maze;
+vector<vector<bool>> visited;
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
+
+void dfs(int x, int y, int &max, int &count) {
+    if (x < 0 || y < 0 || x >= maze.size() || y >= maze[0].size() || visited[x][y] || maze[x][y] == '#') {
+        return;
+    }
+    if (x == maze.size()-1 && y == maze[0].size()-1) {
+        int end = 0;
+        if (isdigit(maze[x][y])) {
+            end = maze[x][y] - '0';        
+        }
+        if (count + end > max) {
+            max = count + end;
+        }
+        return;
+    }
+    int temp = -1;
+    if (isdigit(maze[x][y])) {
+        temp = maze[x][y] - '0';
+        count += temp;        
+    }        
+    visited[x][y] = true;
+    for (int i = 0; i < 4; i++) {
+        int r = x+dx[i], c = y+dy[i];
+        dfs(r, c, max, count);
+    }
+    visited[x][y] = false;
+    if (temp > 0) {
+        count -= temp;
+    }
+}
+
+int main(void) {
+    int n, m;
+    cin >> n >> m;
+    for (int i = 0; i < n; i++) {
+        string row;
+        cin >> row;
+        maze.push_back(row);
+        vector<bool> row2(m, false);
+        visited.push_back(row2);
+    }
+    int max = -1, count = 0;
+    dfs(0, 0, max, count);
+    cout << max;
+    return 0;
+}

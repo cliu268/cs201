@@ -71,4 +71,5 @@ int main(void) {
         }
     }
     cout << count;
+    return 0;
 }

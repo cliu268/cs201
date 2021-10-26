@@ -66,11 +66,12 @@ int main(void) {
     while (t) {
         int x, y;
         cin >> x >> y;
-        maze[x][y] = 1;
+        maze[x-1][y-1] = 1;
         t--;
     }
 
     int count = 0;
     dfs(maze, sx, sy, fx, fy, count);
     cout << count;
+    return 0;
 }
