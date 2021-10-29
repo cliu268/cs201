@@ -41,3 +41,62 @@ Example Output：
 Constraints:
 For 100% data input，1≤R,C≤100.
 */
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<int>> map;
+vector<vector<int>> ans;
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
+
+void dfs(int r, int c, int &maxlen, int &len) {
+    int temp = ans[r][c];
+    if (temp) {
+        maxlen = max(maxlen, len+temp);
+        return;
+    } else {
+        len++;
+    }
+
+    maxlen = max(maxlen, len);
+    for (int i = 0; i < 4; i++) {
+        int x = r+dx[i], y = c+dy[i];
+        if (x < 0 || y < 0 || x >= map.size() || y >= map[0].size() || map[x][y] >= map[r][c]) {
+            continue;
+        }
+        dfs(x, y, maxlen, len);  
+    }
+    len--;    
+}
+
+int main(void) {
+    int R, C;
+    cin >> R >> C;
+    for (int i = 0; i < R; i++) {
+        vector<int> row(C);
+        for (int j = 0; j < C; j++) {
+            cin >> row[j];
+        }
+        map.push_back(row);
+        ans.push_back(vector<int>(C, 0));
+    }
+
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            int max = 0, len = 0;
+            dfs(i, j, max, len);
+            ans[i][j] = max;
+        }
+    }
+
+    int answer = 0;
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            answer = max(answer, ans[i][j]);
+        }
+    }    
+
+    cout << answer;
+    return 0;
+}
