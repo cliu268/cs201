@@ -1,4 +1,7 @@
 // Bonus Q2 Square Pasture
+// USACO 2016 December Contest, Bronze
+// Problem 1. Square Pasture
+// http://www.usaco.org/index.php?page=viewproblem2&cpid=663
 /*
 Farmer John has decided to update his farm to simplify its geometry. Previously, his cows grazed in two rectangular 
 fenced-in pastures. Farmer John would like to replace these with a single square fenced-in pasture of minimum size that 
@@ -33,3 +36,17 @@ moreover, this is the best possible, since it is impossible to enclose the origi
 only 6. Note that there are several different possible valid placements for the square of side length 7, as it could have 
 been shifted vertically a bit.
 */
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main(void) {
+    freopen("square.in", "r", stdin);
+    freopen("square.out", "w", stdout);    
+
+    int ax1,ay1,ax2,ay2,bx1,by1,bx2,by2;
+    cin >> ax1 >> ay1 >> ax2 >> ay2 >> bx1 >> by1 >> bx2 >> by2;
+    int s = max(max(ax2, bx2) - min(ax1, bx1), max(ay2, by2) - min(ay1, by1));
+    cout << s*s;    
+    return 0;
+}

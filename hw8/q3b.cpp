@@ -1,4 +1,7 @@
 // Bonus Q3 Blocked Billboard II
+// USACO 2018 January Contest, Bronze
+// Problem 1. Blocked Billboard II
+// http://www.usaco.org/index.php?page=viewproblem2&cpid=783
 /*
 Bessie the cow used to have such a nice view from her barn, looking across road at a set of two billboards advertising 
 delicious looking cow feed. Unfortunately, one of these billboards has recently been updated so it now advertises "Farmer 
@@ -35,3 +38,36 @@ SAMPLE OUTPUT:
 Here, the cow feed billboard obscures the lower right corner of the lawnmower billboard, but this doesn't really help, 
 since Bessie still needs to use a tarp whose size is as large as the entire lawnmower billboard.
 */
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main(void) {
+    freopen("billboard.in", "r", stdin);
+    freopen("billboard.out", "w", stdout);    
+
+    int ax1,ay1,ax2,ay2,bx1,by1,bx2,by2;
+    cin >> ax1 >> ay1 >> ax2 >> ay2 >> bx1 >> by1 >> bx2 >> by2;
+    int area = 0;
+    if (ax2 <= bx1 || bx2 <= ax1 || ay2 <= by1 || by2 <= ay1) { // no intersect
+        area = (ax2 - ax1) * (ay2 - ay1);
+    } else if ((by1 > ay1 && by2 < ay2) || (bx1 > ax1 && bx2 < ax2)) { // totally inside
+        area = (ax2 - ax1) * (ay2 - ay1);
+    } else if (bx1 <= ax1 && bx2 >= ax2) { // blocking *ALL* x
+        if (ay2 >= by2) {
+            area = (ay2 - by2) * (ax2 - ax1);
+        } else if (by1 >= ay1) {
+            area = (by1 - ay1) * (ax2 - ax1);
+        }
+    } else if (by1 <= ay1 && by2 >= ay2) { // blocking *ALL* y
+        if (ax2 >= bx2) {
+            area = (ax2 - bx2) * (ay2 - ay1);
+        } else if (bx1 >= ax1) {
+            area = (bx1 - ax1) * (ay2 - ay1);
+        }
+    } else {
+        area = (ax2 - ax1) * (ay2 - ay1);
+    }
+    cout << area;    
+    return 0;
+}

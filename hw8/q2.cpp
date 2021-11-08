@@ -32,10 +32,38 @@ Sample input 1：
 Sample output 1：
 1
 
+Sample input 2:
+20 20 15
+..*.......**...*....
+................**..
+....*............*..
+....**............*.
+..*.................
+.....*..............
+.............*.**...
+........*..*......**
+.............*.*.*..
+.....*........*.....
+.*..*....*..........
+*................*..
+***.................
+.........*....*.....
+.......**...........
+...........**.....*.
+..*.*...............
+....*......*........
+....................
+........*.......*...
+18 11 18 10
+
+Sample output 2:
+14396412
+
 Note：
 2<=n,m<=100
 0
 */
+// Reference this: https://www.codeleading.com/article/7312839084/ to save intermediate steps to save time
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -60,6 +88,7 @@ bool isValid(point p) {
 int main(void) {
     int n,m,t,r1,c1,r2,c2;
     cin >> n >> m >> t;
+    vector<vector<vector<int>>> ans(n, vector<vector<int>> (m, vector<int> (t+1, 0)));
     string row;
     for (int i = 0; i < n; i++) {
         cin >> row;
@@ -67,26 +96,60 @@ int main(void) {
     }
     cin >> r1 >> c1 >> r2 >> c2;
     q.push(point(r1-1, c1-1, 0));
-    int ans=0;
+    ans[r1-1][c1-1][0] = 1;
     while (!q.empty()) {
         int x = q.front().x;
         int y = q.front().y;
         int l = q.front().l;
         q.pop();
-        if (l == t) {
-            if (x == r2-1 && y == c2-1) {
-                ans++;
-            }
-            continue;
-        }
+        // if (l == t) {
+        //     if (x == r2-1 && y == c2-1) {
+        //         ans++;
+        //     }
+        //     continue;
+        // }
         for (int i = 0; i < 4; i++) {
-            point p = point(x+dx[i], y+dy[i], l+1);
-            if (!isValid(p)) {
+            if (!isValid(point(x+dx[i], y+dy[i], l+1))) {
                 continue;
+            }            
+            if (ans[x+dx[i]][y+dy[i]][l+1] == 0) { // next point has not been visited
+                q.push(point(x+dx[i], y+dy[i], l+1));
             }
-            q.push(p);
+            ans[x+dx[i]][y+dy[i]][l+1] += ans[x][y][l];
         }
     }
-    cout << ans;
+    cout << ans[r2-1][c2-1][t];
     return 0;
 }
+
+
+// Dynamic Programming.. super smart!! found it here https://www.bbsmax.com/A/6pdDLyakdw/
+// #include <iostream>
+// using namespace std;
+// int map[101][101],f[101][101][16];
+// int n,m,t,i,j,k,r1,c1,r2,c2;
+// char s[101];
+// int main() {
+//   cin >> n >> m >> t;
+//   for(i=1;i<=n;i++) {
+//     scanf("%s",s);
+//   	for(j=0;j<m;j++) {
+//   	  if(s[j]=='.') {
+//         map[i][j+1]=1;
+//       }
+//     }
+//   }
+//   scanf("%d%d%d%d",&r1,&c1,&r2,&c2);
+//   f[r1][c1][0]=1;
+//   for(k=1;k<=t;k++) {
+//     for(i=1;i<=n;i++) {
+//       for(j=1;j<=m;j++) {
+//   	    if(map[i][j]) {
+// 	        f[i][j][k]=f[i-1][j][k-1]+f[i+1][j][k-1]+f[i][j-1][k-1]+f[i][j+1][k-1];
+//         }
+//       }
+//     }
+//   }
+//   printf("%d",f[r2][c2][t]);
+//   return 0;
+// }

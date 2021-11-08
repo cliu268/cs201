@@ -1,4 +1,7 @@
 // Bonus Q5 Why Did the Cow Cross the Road II
+// USACO 2017 February Contest, Bronze
+// Problem 2. Why Did the Cow Cross the Road II
+// http://www.usaco.org/index.php?page=viewproblem2&cpid=712
 /*
 The layout of Farmer John's farm is quite peculiar, with a large circular road running around the perimeter of the main 
 field on which his cows graze during the day. Every morning, the cows cross this road on their way towards the field, and 
@@ -13,7 +16,7 @@ ultimately forming a string with 52 characters in which each letter of the alpha
 record which crossing points are entry points and which are exit points.
 
 Looking at his map of crossing points, Farmer John is curious how many times various pairs of cows might cross paths during 
-the day. He calls a pair of cows (a,b)(a,b) a "crossing" pair if cow aa's path from entry to exit must cross cow bb's path 
+the day. He calls a pair of cows (a,b) a "crossing" pair if cow a's path from entry to exit must cross cow b's path 
 from entry to exit. Please help Farmer John count the total number of crossing pairs.
 
 INPUT FORMAT (file circlecross.in):
@@ -30,3 +33,39 @@ SAMPLE OUTPUT:
 1
 In this example, only cows A and B are a crossing pair.
 */
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+using namespace std;
+
+int main(void) {
+    freopen("circlecross.in", "r", stdin);
+    freopen("circlecross.out", "w", stdout);    
+
+    vector<int> cow(26, 0);
+    string input;
+    cin >> input;
+    int answer = 0;
+    for (int i = 0; i < 52; i++) {
+        int index = input[i] - 'A';
+        if (cow[index] == 1) {
+            continue;
+        }
+        cow[index] = 1;
+        vector<int> cow2(26, 0);
+        for (int j = i+1; j < 52; j++) {
+            int index2 = input[j] - 'A';
+            if (index2 == index) {
+                break;
+            }
+            if (cow2[index2] == 0) {
+                cow2[index2] = 1;
+                answer++;
+            } else if (cow2[index2] == 1) {
+                answer--;
+            }                
+        }
+    }
+    cout << answer/2; // you will be double counting so divide by 2 **(a,b) and (b,a) are the same**
+    return 0;
+}
