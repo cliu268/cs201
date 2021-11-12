@@ -24,3 +24,48 @@ Sample output:
 Hint
 Solution for sample data is: 5-10-9-18-17, thus it needs 4 minutes
 */
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> visited(100001, 0);
+
+int main(void) {
+    int n, k;
+    cin >> n >> k;
+    if (n >= k) {
+        cout << n-k;
+    } else { // n < k lets do bfs
+        int answer = 0;
+        // while (k - n >= n) {
+        //     n *= 2;
+        //     answer++;
+        // }
+        queue<pair<int, int>> q;
+        visited[n] = 1;
+        q.push(pair<int, int>(n, 0));
+        while (!q.empty()) {
+            n = q.front().first;
+            answer = q.front().second;
+            q.pop();
+            if (n == k) {
+                cout << answer;
+                return 0;
+            }
+            int next[3] = {1, -1, n};
+            answer++;
+            for (int i = 0; i < 3; i++) {
+                int nn = n + next[i];
+                if (nn < 0 || nn > 100000 || visited[nn]) continue;
+                if (nn == k) {
+                    cout << answer;
+                    return 0;
+                }
+                visited[nn] = 1;
+                q.push(pair<int, int>(nn, answer));
+            }
+        }
+    }
+    return 0;
+}
