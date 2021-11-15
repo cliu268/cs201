@@ -102,14 +102,13 @@ int main(void) {
         int y = q.front().y;
         int l = q.front().l;
         q.pop();
-        // if (l == t) {
-        //     if (x == r2-1 && y == c2-1) {
-        //         ans++;
-        //     }
-        //     continue;
-        // }
+        if (l == t) {
+            if (x == r2-1 && y == c2-1) {
+                break;
+            }
+        }
         for (int i = 0; i < 4; i++) {
-            if (!isValid(point(x+dx[i], y+dy[i], l+1))) {
+            if (!isValid(point(x+dx[i], y+dy[i], l+1)) || l+1 > t) {
                 continue;
             }            
             if (ans[x+dx[i]][y+dy[i]][l+1] == 0) { // next point has not been visited
