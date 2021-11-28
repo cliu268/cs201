@@ -42,6 +42,16 @@ Sample input 2:
 Sample output 2:
 10
 
+Sample input 3:
+4 4
+0ADB
+CBAE
+FFCD
+GGE0
+
+Sample output 3:
+3
+
 Data range:
 For 60% of the data, n, m <= 20
 For 100% of the data, n, m <= 100
@@ -109,7 +119,7 @@ int main(void) {
             }            
             if (maze[xx][yy] == '0') {
                 maze[xx][yy] = '1';
-            } else if (found) {
+            } else if (found && maze[xx][yy] == ch) {
                 continue;
             }
             q.push(point(xx, yy, count));
