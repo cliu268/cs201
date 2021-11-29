@@ -52,6 +52,16 @@ GGE0
 Sample output 3:
 3
 
+Sample input 4:
+4 4
+0000
+0AB0
+0BA1
+0010
+
+Sample output 4:
+No Solution.
+
 Data range:
 For 60% of the data, n, m <= 20
 For 100% of the data, n, m <= 100
@@ -79,12 +89,13 @@ int dy[4] = {0, 1, 0, -1};
 int main(void) {
     int n, m;
     cin >> n >> m;
+    vector<vector<bool>> visited(n, vector<bool>(m, false));
     for (int i = 0; i < n; i++) {
         string row;
         cin >> row;
         maze.push_back(row);
     }
-    maze[0][0] = '1';
+    visited[0][0] = true;
     q.push(point(0, 0, 0));
     while (!q.empty()) {
         point p = q.front();
@@ -110,21 +121,110 @@ int main(void) {
         count++;
         for (int i = 0; i < 4; i++) {
             int xx = x + dx[i], yy = y + dy[i];
-            if (xx < 0 || yy < 0 || xx >= n || yy >= m || maze[xx][yy] == '1') {
+            if (xx < 0 || yy < 0 || xx >= n || yy >= m || maze[xx][yy] == '1' || visited[xx][yy]) {
                 continue;
             }
             if (xx == n-1 && yy == m-1) {
                 cout << count;
                 return 0;
-            }            
-            if (maze[xx][yy] == '0') {
-                maze[xx][yy] = '1';
-            } else if (found && maze[xx][yy] == ch) {
-                continue;
-            }
+            }    
+            visited[xx][yy] = true;
             q.push(point(xx, yy, count));
         }
     }
     cout << "No Solution.";
     return 0;
 }
+
+// #include <iostream>
+// #include <vector>
+// #include <queue>
+// using namespace std;
+
+// vector<string> board;
+// vector<vector<bool>> visited;
+// vector<vector<int>> A;
+// int dx[4]={1,-1,0,0};
+// int dy[4]={0,0,1,-1};
+// struct point {
+//   int x,y,length;
+//   point(int a, int b, int c) : x(a), y(b), length(c) {}
+// };
+
+// queue<point> q;
+// int ans=0;
+// bool broke=false;
+
+// vector<int> check(char a, int x, int y) {
+//   // cout<<a<<": "<<x<<" "<<y<<"\n";
+//   for (int i=0; i<board.size(); i++) {
+//     for (int j=0; j<board[0].size(); j++) {
+//       if (board[i][j]==a && !(i==x && j==y)) {
+//         // cout<<a<<": "<<i<<" "<<j<<"\n";
+//         return {i,j};
+//       }
+//     }
+//   }
+// }
+// void exploreNeighbors(int x, int y, int length) {
+//   length++;
+//   // cout<<"exploring (" << x <<"," << y << ") \n";
+//   for (int i=0; i<4; i++) {
+//     if (x+dx[i]<0 || y+dy[i]<0 || x+dx[i]>=board.size() || y+dy[i]>=board[0].size()) {
+//       continue;
+//     }
+//     if (visited[x+dx[i]][y+dy[i]]==true) {
+//       continue;
+//     }
+//     if (board[x+dx[i]][y+dy[i]]=='1') {
+//       continue;
+//     }
+//     if (x+dx[i]==board.size()-1 && y+dy[i]==board[0].size()-1) {
+//       ans=length;
+//       broke=true;
+//       return;
+//     }
+//     if (board[x+dx[i]][y+dy[i]]!='0') {
+//       vector<int> other=check(board[x+dx[i]][y+dy[i]], x+dx[i], y+dy[i]);
+//       q.push(point(other[0], other[1], length));
+//       // cout<<"pushing (" << other[0]<<"," << other[1] << ") \n";
+//     }
+//     else {
+//       q.push(point(point(x+dx[i], y+dy[i], length)));
+//       // cout<<"pushing (" << x+dx[i]<<"," << y+dy[i] << ") \n";
+//     }
+//     visited[x+dx[i]][y+dy[i]]=true;
+//   }
+// }
+// void bfs() {
+//   int length=0; 
+//   q.push(point(0,0,length));
+//   while (!q.empty() && broke==false) {
+//     point current=q.front();
+//     q.pop();
+//     exploreNeighbors(current.x, current.y, current.length);
+//   }
+// }
+// int main() {
+//   int n,m;
+//   cin>>n>>m;
+//   for (int i=0; i<n; i++) {
+//     string s;
+//     cin>>s;
+//     board.push_back(s);
+//   }
+//   for (int i=0; i<n; i++) {
+//     vector<bool> row(m);
+//     for (int j=0; j<m; j++) {
+//       row[j]=false;
+//     }
+//     visited.push_back(row);
+//   }
+//   bfs();
+//   if (broke==false) {
+//     cout<<"No Solution.";
+//   }
+//   else {
+//     cout<<ans;
+//   }
+// } 

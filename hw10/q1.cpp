@@ -34,3 +34,70 @@ Note：
 1<=H_i<=1000000
 */
 // same question as hw5 q1, refer to https://github.com/cliu268/cs201/blob/main/hw5/q1.cpp
+// following using BFS to solve it
+#include <iostream>
+#include <vector>
+#include <queue>
+typedef long long ll;
+using namespace std;
+
+ll b;
+vector<ll> cows;
+queue<vector<ll>> q;
+ll least=999999999999999999;
+
+bool shareIndicies(vector<ll> indicies, int compare) {
+    for (int i=0; i<indicies.size(); i++) {
+        if (compare==indicies[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+ll sum(vector<ll> vect) {
+  ll ans=0;
+  for (int i=0; i<vect.size(); i++) {
+    ans+=cows[vect[i]];
+  }
+  return ans;
+}
+
+void exploreNeighbors(vector<ll> current) {
+  if (sum(current)>=b) {
+    if (least>sum(current)-b) {
+      least=sum(current)-b;
+    }
+    return;
+  }
+  for (int i=0; i<cows.size(); i++) {
+    if (shareIndicies(current, i)==false) {
+      vector<ll> temp=current;
+      temp.push_back(i);
+      q.push(temp);
+    }
+  }
+}
+
+void bfs(ll initial) {
+  q.push({initial});
+  while (!q.empty()) {
+    vector<ll> current=q.front();
+    q.pop();
+    exploreNeighbors(current);
+  }
+}
+
+int main() {
+  int n;
+  cin>>n>>b;
+  for (int i=0; i<n; i++) {
+    ll x;
+    cin>>x;
+    cows.push_back(x);
+  }
+  for (int i=0; i<n; i++) {
+    bfs(i);
+  }
+  cout<<least;
+} 
