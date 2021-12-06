@@ -133,7 +133,7 @@ int main(void) {
         }                
     }
     if (answer == 0) {
-        cout << "****Meeting cancelled";
+        cout << "Meeting cancelled";
     } else {
         cout << answer;
     }
