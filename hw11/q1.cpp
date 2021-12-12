@@ -36,3 +36,84 @@ Sample input 1：
 Sample output 1：
 11
 */
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<vector<int>>> board;
+struct point {
+  int x,y,z,counter;
+  point(int a, int b, int c, int d) : x(a), y(b), z(c), counter(d) {}
+};
+queue<point> q;
+int dx[6]={1,-1,0,0,0,0};
+int dy[6]={0,0,1,-1,0,0};
+int dz[6]={0,0,0,0,1,-1};
+int a,b,c,t; 
+bool broke=false;
+vector<vector<vector<bool>>> visited;
+void initialize() {
+  for (int i=0; i<a; i++) {
+    vector<vector<bool>> x;
+    for (int j=0; j<b; j++) {
+      vector<bool> row(c,false);
+      x.push_back(row);
+    }
+    visited.push_back(x);
+  }
+}
+void exploreNeighbors(int x, int y, int z, int counter) {
+  counter++;
+  for (int i=0; i<6; i++) {
+    int newx=x+dx[i]; int newy=y+dy[i]; int newz=z+dz[i];
+    if (newx<0 || newy<0 || newz<0 || newx>a-1 || newy>b-1 || newz>c-1) {
+      continue;
+    }
+    if (visited[newx][newy][newz]) {
+      continue;
+    }
+    if (board[newx][newy][newz]==1) {
+      continue;
+    }
+    if ((newx==a-1) && (newy==b-1) && (newz==c-1)) {
+      cout<<counter;
+      broke=true;
+      return;
+    }
+    visited[newx][newy][newz]=true;
+    q.push(point(newx,newy,newz, counter));
+  }
+}
+void bfs(point start) {
+  q.push(start);
+  while (!q.empty() && !broke) {
+    point curr=q.front();
+    q.pop();
+    exploreNeighbors(curr.x, curr.y, curr.z, curr.counter);
+  }
+  if (broke==false) {
+    cout<<-1;
+  }
+  broke=false;
+  initialize();
+}
+int main() {
+  int k; cin>>k;
+  while (k--) {
+    cin>>a>>b>>c>>t;
+    for (int i=0; i<a; i++) {
+      vector<vector<int>> temp;
+      for (int j=0; j<b; j++) {
+        vector<int> row(c);
+        for (int k=0; k<c; k++) {
+          cin>>row[k];
+        }
+        temp.push_back(row);
+      }
+      board.push_back(temp);
+    }
+    initialize();
+    bfs(point(0,0,0,0));
+  }
+} 
