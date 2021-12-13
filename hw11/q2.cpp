@@ -27,3 +27,143 @@ Sample input 1：
 Sample output 1：
 3
 */
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct f {
+    int l, c;
+    f(int a, int b) : l(a), c(b) {}
+};
+queue<f> q;
+
+void exploreNeighbors(f current, vector<int> &k, vector<bool> &v, int &B, bool &found) {
+    for (int i = 0; i < 2; i++) {
+        f next = f(current.l, current.c+1);
+        if (i == 0) { // move down
+            next.l -= k[current.l];
+        } else { // move up
+            next.l += k[current.l];
+        }
+        if (next.l < 0 || next.l >= k.size() || v[next.l]) {
+            continue;
+        }
+        v[next.l] = true;
+        if (next.l == B) {
+            cout << next.c << '\n';
+            found = true;
+            return;
+        }
+        q.push(next);
+    }
+}
+
+void bfs(vector<int> &k, vector<bool> &v, int &A, int &B) {
+    q.push(f(A, 0));
+    v[A] = true;
+    bool found = false;
+    while (!q.empty()) {
+        f current = q.front();
+        q.pop();
+        if (!found) {
+            exploreNeighbors(current, k, v, B, found);
+        }
+    }
+    if (!found) {
+        cout << -1 << '\n';
+    }
+}
+
+int main(void) {
+    int N, A, B;
+    cin >> N;
+    while (N > 0) {
+        cin >> A >> B;
+        vector<int> k(N);
+        vector<bool> v(N, false);
+        for (int i = 0; i < N; i++) {
+            cin >> k[i];
+        }
+        if (A == B) {
+            cout << 0 << '\n';
+        } else {
+            A--, B--;
+            bfs(k, v, A, B);
+        }
+        cin >> N;
+    }
+    return 0;
+}
+
+// using namespace std;
+ 
+// vector<int> floors;
+// int n,a,b;
+// vector<bool> visited;
+// struct point {
+//   int floor, length;
+//   point(int a, int b) : floor(a), length(b) {}
+// };
+// queue<point> q;
+// bool broke=false;
+// void exploreNeighbors(int floor, int length) {
+//   if (a==b) {
+//     cout<<0;
+//     broke=true;
+//     return;
+//   }
+//   length++;
+//   int newfloor;
+//   for (int i=0; i<2; i++) {
+//     if (i==0) {
+//       newfloor=floor+floors[floor-1];
+//     }
+//     else {
+//       newfloor=floor-floors[floor-1];
+//     }
+//     if (newfloor<1 || newfloor>floors.size()) {
+//       continue;
+//     }
+//     if (visited[newfloor-1]) {
+//       continue;
+//     }
+//     visited[newfloor-1]=true;
+//     if (newfloor==b) {
+//       cout<<length;
+//       broke=true;
+//       return;
+//     }
+//     q.push(point(newfloor, length));
+//   }
+// }
+// void bfs() {
+//   q.push(point(a, 0));
+//   while (!q.empty() && !broke) {
+//     point curr=q.front();
+//     q.pop();
+//     exploreNeighbors(curr.floor, curr.length);
+//   }
+//   if (broke==false) {
+//     cout<<-1;
+//   }
+//   broke=false;
+//   for (int i=0; i<visited.size(); i++) {
+//     visited[i]=false;
+//   }
+// }
+// int main() {
+//   cin>>n;
+//   while (n!=0) {
+//     cin>>a>>b;
+//     for (int i=0; i<n; i++) {
+//       int x; cin>>x;
+//       floors.push_back(x);
+//     }
+//     for (int i=0; i<n; i++) {
+//       visited.push_back(false);
+//     }
+//     bfs();
+//     cin>>n;
+//   }
+// }
