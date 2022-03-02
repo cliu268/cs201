@@ -67,3 +67,56 @@ int main(void) {
     solve(current, 0, H, B);
     cout << ans;
 }
+
+// Frank's solution from https://replit.com/@Spinspin/DFSSuperShelf#main.cpp
+/*
+#include <iostream>
+
+using namespace std;
+
+int numOfCows;
+
+int cowTotalHeight = 0;
+int cowHeight[100];
+int shelfHeight;
+int minTotalHeight = 20000000;
+
+bool visited[100];
+
+void dfs(int cowNo)
+{
+  if (visited[cowNo]) return;
+
+  visited[cowNo] = true;
+  cowTotalHeight += cowHeight[cowNo];
+
+  if(cowTotalHeight >= shelfHeight) {
+      minTotalHeight = min(minTotalHeight, cowTotalHeight);
+      return;
+  }
+
+  for(int i = 1;i <= numOfCows && i != cowNo; i++) {
+      dfs(i);
+      visited[i] = false;
+      cowTotalHeight -= cowHeight[i];
+  }
+}
+
+int main()
+{
+  cin >> numOfCows >> shelfHeight;
+
+  for(int i = 1;i <= numOfCows; i++) {
+      cin >> cowHeight[i];
+  }
+
+  for (int i = 1; i <= numOfCows; i++) {
+    dfs(i);
+  }
+
+  cout<< minTotalHeight - shelfHeight << endl;
+
+  return 0;
+
+}   
+*/
