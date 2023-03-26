@@ -3,6 +3,7 @@
         "vector": "cpp",
         "iomanip": "cpp",
         "iostream": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "xiosbase": "cpp"
     }
 }
